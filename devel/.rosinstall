@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/ros/catkin_rsomer2/devel/setup.sh

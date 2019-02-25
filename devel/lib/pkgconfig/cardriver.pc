@@ -1,0 +1,8 @@
+prefix=/home/ros/catkin_rsomer2/devel
+
+Name: cardriver
+Description: Description of cardriver
+Version: 0.0.0
+Cflags: -I/home/ros/catkin_rsomer2/devel/include -I/home/ros/catkin_rsomer2/src/cardriver/include
+Libs: -L/home/ros/catkin_rsomer2/devel/lib 
+Requires: roscpp rospy serial std_msgs sensor_msgs geometry_msgs message_runtime

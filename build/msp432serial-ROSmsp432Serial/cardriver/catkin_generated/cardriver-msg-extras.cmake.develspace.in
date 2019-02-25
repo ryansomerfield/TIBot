@@ -1,0 +1,2 @@
+set(cardriver_MESSAGE_FILES "/home/ros/catkin_rsomer2/src/msp432serial-ROSmsp432Serial/cardriver/msg/infrared.msg")
+set(cardriver_SERVICE_FILES "")

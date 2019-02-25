@@ -1,0 +1,8 @@
+prefix=/home/ros/catkin_rsomer2/install
+
+Name: lab3
+Description: Description of lab3
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/ros/catkin_rsomer2/install/lib 
+Requires: roscpp rospy

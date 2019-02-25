@@ -1,0 +1,2 @@
+cardriver:se498_lab2:se498_lab4:se498labs-lab3_skeleton_code:serial:usb_cam
+-DCATKIN_DEVEL_PREFIX=/home/ros/catkin_rsomer2/devel -DCMAKE_INSTALL_PREFIX=/home/ros/catkin_rsomer2/install -G Unix Makefiles

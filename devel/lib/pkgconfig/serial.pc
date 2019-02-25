@@ -1,0 +1,8 @@
+prefix=/home/ros/catkin_rsomer2/devel
+
+Name: serial
+Description: Description of serial
+Version: 1.2.1
+Cflags: -I/home/ros/catkin_rsomer2/src/serial/include
+Libs: -L/home/ros/catkin_rsomer2/devel/lib -lserial -lrt -lpthread
+Requires: 
