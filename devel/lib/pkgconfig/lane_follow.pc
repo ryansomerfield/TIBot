@@ -1,0 +1,8 @@
+prefix=/home/ros/catkin_rsomer2/devel
+
+Name: lane_follow
+Description: Description of lane_follow
+Version: 0.0.0
+Cflags: -I/home/ros/catkin_rsomer2/src/lanefollow/lane_follow/include
+Libs: -L/home/ros/catkin_rsomer2/devel/lib -llane_follow
+Requires: roscpp rospy sensor_msgs std_msgs

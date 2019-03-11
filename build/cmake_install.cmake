@@ -122,6 +122,8 @@ if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   include("/home/ros/catkin_rsomer2/build/se498_lab4/cmake_install.cmake")
   include("/home/ros/catkin_rsomer2/build/cardriver/cmake_install.cmake")
   include("/home/ros/catkin_rsomer2/build/se498labs-lab3_skeleton_code/cmake_install.cmake")
+  include("/home/ros/catkin_rsomer2/build/lanefollow/lane_follow/cmake_install.cmake")
+  include("/home/ros/catkin_rsomer2/build/raspicam_node/cmake_install.cmake")
   include("/home/ros/catkin_rsomer2/build/usb_cam/cmake_install.cmake")
 
 endif()

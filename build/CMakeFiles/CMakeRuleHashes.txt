@@ -1,11 +1,19 @@
 # Hashes of file build rules.
 d87944e6b60f3be96a8a7be255f5bd38 /home/ros/catkin_rsomer2/devel/include/cardriver/infrared.h
+245f4225aae90150e014f0e93569bfed /home/ros/catkin_rsomer2/devel/include/raspicam_node/CameraConfig.h
+c38ba6deb344728c68bcb023c098d3e9 /home/ros/catkin_rsomer2/devel/include/raspicam_node/MotionVectors.h
 a3f68f57356cf7fdf3186a4cb9a7d6d9 /home/ros/catkin_rsomer2/devel/lib/python2.7/dist-packages/cardriver/msg/__init__.py
 2f2e511358e04a05605eb0d4e1e29649 /home/ros/catkin_rsomer2/devel/lib/python2.7/dist-packages/cardriver/msg/_infrared.py
+f8d7533649b7f0d41bd5ca7b59ef565b /home/ros/catkin_rsomer2/devel/lib/python2.7/dist-packages/raspicam_node/msg/_MotionVectors.py
+2cbc4eab2ea541fc49b874db89306e87 /home/ros/catkin_rsomer2/devel/lib/python2.7/dist-packages/raspicam_node/msg/__init__.py
 5cf6f2a608c0fc598018fcd4a4dd1ade /home/ros/catkin_rsomer2/devel/share/common-lisp/ros/cardriver/msg/infrared.lisp
+afa1d63286d9fb4cda1888aba73bd7bc /home/ros/catkin_rsomer2/devel/share/common-lisp/ros/raspicam_node/msg/MotionVectors.lisp
 8341d632e03e53fdebb22aa74c9ecf09 /home/ros/catkin_rsomer2/devel/share/gennodejs/ros/cardriver/msg/infrared.js
+3a5e2263a11f4f88c5ee47f30a4fa2d1 /home/ros/catkin_rsomer2/devel/share/gennodejs/ros/raspicam_node/msg/MotionVectors.js
 3f02e70350797129dae3f125c6d3d4f9 /home/ros/catkin_rsomer2/devel/share/roseus/ros/cardriver/manifest.l
 67937eecc542c9743139317d233c8fe5 /home/ros/catkin_rsomer2/devel/share/roseus/ros/cardriver/msg/infrared.l
+affbf21c1e427b0536a2c3b338f2e591 /home/ros/catkin_rsomer2/devel/share/roseus/ros/raspicam_node/manifest.l
+1c92a42fd02222d808132454409f44f6 /home/ros/catkin_rsomer2/devel/share/roseus/ros/raspicam_node/msg/MotionVectors.l
 770a8dd97399e0033887a6cd2ef65247 CMakeFiles/clean_test_results
 408cd1c926d6e607d549395cb211cac3 cardriver/CMakeFiles/_cardriver_generate_messages_check_deps_infrared
 633da49207b603a953a68a99739ea047 cardriver/CMakeFiles/cardriver_generate_messages_cpp
@@ -13,6 +21,13 @@ a3f68f57356cf7fdf3186a4cb9a7d6d9 /home/ros/catkin_rsomer2/devel/lib/python2.7/di
 633da49207b603a953a68a99739ea047 cardriver/CMakeFiles/cardriver_generate_messages_lisp
 633da49207b603a953a68a99739ea047 cardriver/CMakeFiles/cardriver_generate_messages_nodejs
 633da49207b603a953a68a99739ea047 cardriver/CMakeFiles/cardriver_generate_messages_py
+0b0113cb61aea72747b99dfae81ca110 raspicam_node/CMakeFiles/_raspicam_node_generate_messages_check_deps_MotionVectors
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_gencfg
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_generate_messages_cpp
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_generate_messages_eus
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_generate_messages_lisp
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_generate_messages_nodejs
+558ba208f714a3889b958d46f89139e0 raspicam_node/CMakeFiles/raspicam_node_generate_messages_py
 fa9adfce4d35855543d3f34a3057d0b4 serial/tests/CMakeFiles/_run_tests_serial_gtest_serial-test
 39aade9d37ac41bb7a6515316549fabd serial/tests/CMakeFiles/_run_tests_serial_gtest_serial-test-timer
 2a2ebbee0007d3645a1addf8889291fa serial/tests/CMakeFiles/clean_test_results_serial

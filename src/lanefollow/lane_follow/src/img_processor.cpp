@@ -94,19 +94,12 @@ void imgProcessor::getPerspectiveTransform()
  */
 cv::Mat imgProcessor::getHist(const cv::Mat &input){
   cv::Mat sum(1,input.cols,CV_32F); // mat( rows cols type init) this is a 1-D data storage.
-  //come back to HSL image
-  // cv::Mat blue(input.rows,input.cols,CV_32F);
-  // cv::Mat green(input.rows,input.cols,CV_32F);
-  // cv::Mat red(input.rows,input.cols,CV_32F);
   sum = cv::Mat::zeros(sum.size(),CV_32F); // initialize them to zero.
   
   // Implement your code here:
   // you may find cv::accumulate to be useful, google for detail.
-  // blue = split(input, &channels[0]);
-  // green = split(input, &channels[1]);
-  // red = split(input, &channels[2]);
 
-  cv::accumulate(input, sum);
+  cv::reduce(input, sum,0,CV_32F);
 
   return sum;
 }
@@ -152,10 +145,10 @@ imgProcessor::vPoint3f imgProcessor::polyFit(const std::vector<imgProcessor::vPo
   //! @todo: ADD your code here to populate
         // TO access each point in line, do i[_index_of_the_point_]
         // each i is of type imgProcessor::vPoint which is a vector of points.
-        A(row,col)=0; //place holder, modify accordingly
+        A(row,col)=std::pow(lines.at(lines.size()).at(row).x,col); //place holder, modify accordingly
       }// end for each row, populate A
 
-      b(row) = i[row].x; // populate B
+      b(row) = lines.at(lines.size()).at(row).y
     }
     x = A.colPivHouseholderQr().solve(b);
     lineCoeff.emplace_back(cv::Point3f(x(0),x(1),x(2)));
@@ -223,6 +216,13 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
   cv::Mat hist = getHist(roi);    // get histogram, pass by reference
   cv::minMaxLoc(hist,&min,&max,&min_loc,&max_loc);  //find the min/max location and its value.
 
+  if(newRegion.y > input.rows){
+  	return;
+  }
+  if(newRegion.x > input.cols){
+  	return;
+  }
+
   // ONLY IF the region of interest is at the bottom of the image, we increment the "line" counter
   // by one when we detect a line segment in the region of interest.
   if(newRegion.y == (input.rows-winRowSize)){
@@ -241,18 +241,18 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
 ///         shifted to the horizontal(x) center of the line segment.
 /// @todo: if no line detecte, shift the region of interest (ROI) horizontally.
 
-//      lines.at(line).push_back(cv::Point(?, ?)); //insert the point to the vector of lines.
+     lines.at(line).push_back(cv::Point(max_loc, newRegion.y)); //insert the point to the vector of lines.
 
-//      findCurveRecur(input,
-//                     region+cv::Point(?,?),
-//                     lines,
-//                     line+1);
+     findCurveRecur(input,
+                    region+cv::Point(max_loc, newRegion.y+1),
+                    lines,
+                    line+1);
     }
     else{
-//      findCurveRecur(input,
-//                     region+cv::Point(?,?),
-//                     lines,
-//                     line);
+     findCurveRecur(input,
+                    region+cv::Point(max_loc+1, newRegion),
+                    lines,
+                    line);
     }
    }
 
@@ -270,11 +270,11 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
 /// @todo: when we do detect a line segment, check next region of interest above it with horizontal(x) region
 ///         shifted to the horizontal(x) center of the line segment.
 
-//    lines.at(line).push_back(cv::Point(?, ?)); //insert the point to the vector of lines.
-//    findCurveRecur(input,
-//                   region+max_loc+cv::Point(?,?), // recenter to max, and shift upward.
-//                   lines,
-//                   line);
+   lines.at(line).push_back(cv::Point(max_loc, newRegion.y)); //insert the point to the vector of lines.
+   findCurveRecur(input,
+                  region+max_loc+cv::Point(0,newRegion+1), // recenter to max, and shift upward.
+                  lines,
+                  line);
   }
 }
 
@@ -307,12 +307,12 @@ bool imgProcessor::roadDectect(cv::Mat &imgBGR)
   ///@todo: use sobel to find edges using channelsHLS[1], CV_64F, take derivative in x
   /// uncomment the line below and fill in ?
 // cv::Sobel(channelsHLS[1],sobelx,CV_64F,?,?); // take the derivative in x direction
-  cv::Sobel(channelsHLS[1],sobelx,CV_64F,1,1); // this is just a place holder, modify "?"
+  cv::Sobel(channelsHLS[1],sobelx,CV_64F,1,0); // this is just a place holder, modify "?"
   ///@todo: normalized the sobelx data and store in scaled_sobelx
   /// you can use cv::abs() for absolute value
   /// uncomment the line below and fill in ?
 //  cv::normalize(?, scaled_sobelx,?,?,cv::NORM_INF);
-  cv::normalize(sobelx, scaled_sobelx,50,50,cv::NORM_INF); // place holder. NOT the solution
+  cv::normalize(cv::abs(sobelx), scaled_sobelx,sx_min,sx_max,cv::NORM_INF); // place holder. NOT the solution
 
 /// to view min max value of scaled_sobelx, uncomment the code section below
 /*
@@ -362,16 +362,16 @@ void imgProcessor::selectColor(cv::Mat &input, cv::Mat &mask, Color code)
   default:
     ROS_WARN("color selection error, default to white.");
   case Color::WHITE:
-//    lower = cv::Vec3b(?,?,?);
-//    upper = cv::Vec3b(?,?,?);
+   // lower = cv::Vec3b(0,.9,0);
+   // upper = cv::Vec3b(360,1,0);
     break;
   case Color::YELLOW:
-//    lower = cv::Vec3b(?,?,?);
-//    upper = cv::Vec3b(?,?,?);
+   // lower = cv::Vec3b(44,.40,.21);
+   // upper = cv::Vec3b(70,1,1);
     break;
   case Color::BLACK:
-//    lower = cv::Vec3b(?,?,?);
-//    upper = cv::Vec3b(?,?,?);
+   // lower = cv::Vec3b(0,0,0);
+   // upper = cv::Vec3b(360,.3,1);
     break;
   }
 

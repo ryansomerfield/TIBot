@@ -196,6 +196,9 @@ EMPY_EXECUTABLE:FILEPATH=/usr/bin/empy
 //Empy script
 EMPY_SCRIPT:STRING=/usr/bin/empy
 
+//The directory containing a CMake configuration file for Eigen3.
+Eigen3_DIR:PATH=/usr/lib/cmake/eigen3
+
 //The directory containing a CMake configuration file for GMock.
 GMock_DIR:PATH=GMock_DIR-NOTFOUND
 
@@ -292,11 +295,17 @@ catkin_DIR:PATH=/opt/ros/kinetic/share/catkin/cmake
 //The directory containing a CMake configuration file for class_loader.
 class_loader_DIR:PATH=/opt/ros/kinetic/share/class_loader/cmake
 
+//The directory containing a CMake configuration file for compressed_image_transport.
+compressed_image_transport_DIR:PATH=/opt/ros/kinetic/share/compressed_image_transport/cmake
+
 //The directory containing a CMake configuration file for cpp_common.
 cpp_common_DIR:PATH=/opt/ros/kinetic/share/cpp_common/cmake
 
 //The directory containing a CMake configuration file for cv_bridge.
 cv_bridge_DIR:PATH=/opt/ros/kinetic/share/cv_bridge/cmake
+
+//The directory containing a CMake configuration file for dynamic_reconfigure.
+dynamic_reconfigure_DIR:PATH=/opt/ros/kinetic/share/dynamic_reconfigure/cmake
 
 //The directory containing a CMake configuration file for gencpp.
 gencpp_DIR:PATH=/opt/ros/kinetic/share/gencpp/cmake
@@ -368,6 +377,12 @@ lab3_BINARY_DIR:STATIC=/home/ros/catkin_rsomer2/build/se498labs-lab3_skeleton_co
 //Value Computed by CMake
 lab3_SOURCE_DIR:STATIC=/home/ros/catkin_rsomer2/src/se498labs-lab3_skeleton_code
 
+//Value Computed by CMake
+lane_follow_BINARY_DIR:STATIC=/home/ros/catkin_rsomer2/build/lanefollow/lane_follow
+
+//Value Computed by CMake
+lane_follow_SOURCE_DIR:STATIC=/home/ros/catkin_rsomer2/src/lanefollow/lane_follow
+
 //Path to a library.
 lib:FILEPATH=/opt/ros/kinetic/lib/libcamera_calibration_parsers.so
 
@@ -382,6 +397,12 @@ message_runtime_DIR:PATH=/opt/ros/kinetic/share/message_runtime/cmake
 
 //The directory containing a CMake configuration file for pluginlib.
 pluginlib_DIR:PATH=/opt/ros/kinetic/share/pluginlib/cmake
+
+//Value Computed by CMake
+raspicam_node_BINARY_DIR:STATIC=/home/ros/catkin_rsomer2/build/raspicam_node
+
+//Value Computed by CMake
+raspicam_node_SOURCE_DIR:STATIC=/home/ros/catkin_rsomer2/src/raspicam_node
 
 //The directory containing a CMake configuration file for rosconsole.
 rosconsole_DIR:PATH=/opt/ros/kinetic/share/rosconsole/cmake
@@ -557,7 +578,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=10
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=12
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
