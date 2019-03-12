@@ -60,17 +60,19 @@ void imgProcessor::getPerspectiveTransform()
   uint col= 308;
 
   //Modify the point positions accordingly. Use variables row and col if needed.
-  ptImg[0] = cv::Point2f(365,198);// in pixel
-  ptWorld[0] = cv::Point2f(15.24,24.13);// in centermeter
+  ptImg[0] = cv::Point2f(128,55);// in pixel
+  ptWorld[0] = cv::Point2f(0,0);// in centermeter
 
-  ptImg[1] = cv::Point2f(40,200);// in pixel
-  ptWorld[1] = cv::Point2f(-12.7,24.13);// in centermeter
+  ptImg[1] = cv::Point2f(286,55);// in pixel
+  ptWorld[1] = cv::Point2f(row,0);// in centermeter
 
-  ptImg[2] = cv::Point2f(333,110);// in pixel
-  ptWorld[2] = cv::Point2f(20.32,45.212);// in centermeter
+  ptImg[2] = cv::Point2f(22,259);// in pixel
+  ptWorld[2] = cv::Point2f(0,col);// in centermeter
 
-  ptImg[3] = cv::Point2f(92,110);// in pixel
-  ptWorld[3] = cv::Point2f(-15.24,47.498);// in centermeter
+  ptImg[3] = cv::Point2f(380,259);// in pixel
+  ptWorld[3] = cv::Point2f(row,col);// in centermeter
+
+
 
   perspectiveTransform = cv::getPerspectiveTransform(ptImg,ptWorld);
   invperspectiveTransform = cv::getPerspectiveTransform(ptWorld,ptImg);
@@ -98,8 +100,7 @@ cv::Mat imgProcessor::getHist(const cv::Mat &input){
   
   // Implement your code here:
   // you may find cv::accumulate to be useful, google for detail.
-
-  cv::reduce(input, sum,0,CV_32F);
+  cv::reduce(input, sum,0,CV_REDUCE_SUM,CV_32F);
 
   return sum;
 }
@@ -132,7 +133,7 @@ cv::Mat imgProcessor::getHist(const cv::Mat &input){
 imgProcessor::vPoint3f imgProcessor::polyFit(const std::vector<imgProcessor::vPoint>& lines){
   imgProcessor::vPoint3f lineCoeff;
   Eigen::Vector3f x = Eigen::Vector3f::Zero();
-
+  std::cout<<"PolyFit"<<std::endl;
   // for each line do:
   for(auto i:lines){
     if( i.empty() ) continue; // if points on lane is empty, then move on,
@@ -144,11 +145,11 @@ imgProcessor::vPoint3f imgProcessor::polyFit(const std::vector<imgProcessor::vPo
       for(size_t col = 0, cols = A.cols(); col<cols;++col){
   //! @todo: ADD your code here to populate
         // TO access each point in line, do i[_index_of_the_point_]
-        // each i is of type imgProcessor::vPoint which is a vector of points.
-        A(row,col)=std::pow(lines.at(lines.size()).at(row).x,col); //place holder, modify accordingly
+        // each i is of type imgProcessor::vPoint which is a vector of points
+        A(row,col)=std::pow(i[row].x,col); //place holder, modify accordingly
       }// end for each row, populate A
-
-      b(row) = lines.at(lines.size()).at(row).y
+      	b(row) = i[row].y;
+      //b(row) = lines.at(lines.size()).at(row).y
     }
     x = A.colPivHouseholderQr().solve(b);
     lineCoeff.emplace_back(cv::Point3f(x(0),x(1),x(2)));
@@ -175,7 +176,10 @@ imgProcessor::vPoint3f imgProcessor::findCurve(cv::Mat &input){
   std::vector<vPoint> lines; // initialize empty line.
 
   findCurveRecur(input, region, lines, 0); // start looking for line at region with line 0.
-  if( lines.empty()) return lineCoeff;  // if no line detected, return empty coefficient.
+  if( lines.empty()){
+  	 return lineCoeff;  // if no line detected, return empty coefficient.
+  	 std::cout<<"Line Empty"<<std::endl;
+  }
   lineCoeff = polyFit(lines);
 
   std::cout<< "*****************returned******************" <<std::endl;
@@ -216,13 +220,6 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
   cv::Mat hist = getHist(roi);    // get histogram, pass by reference
   cv::minMaxLoc(hist,&min,&max,&min_loc,&max_loc);  //find the min/max location and its value.
 
-  if(newRegion.y > input.rows){
-  	return;
-  }
-  if(newRegion.x > input.cols){
-  	return;
-  }
-
   // ONLY IF the region of interest is at the bottom of the image, we increment the "line" counter
   // by one when we detect a line segment in the region of interest.
   if(newRegion.y == (input.rows-winRowSize)){
@@ -240,17 +237,16 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
 /// @todo: when we do detect a line segment, check next region of interest above it with horizontal(x) region
 ///         shifted to the horizontal(x) center of the line segment.
 /// @todo: if no line detecte, shift the region of interest (ROI) horizontally.
-
-     lines.at(line).push_back(cv::Point(max_loc, newRegion.y)); //insert the point to the vector of lines.
+     lines.at(line).push_back(cv::Point(max_loc.x, max_loc.y)); //insert the point to the vector of lines.
 
      findCurveRecur(input,
-                    region+cv::Point(max_loc, newRegion.y+1),
+                    region+cv::Point(max_loc.x, max_loc.y+1),
                     lines,
                     line+1);
     }
     else{
      findCurveRecur(input,
-                    region+cv::Point(max_loc+1, newRegion),
+                    region+cv::Point(max_loc.x+1, max_loc.y),
                     lines,
                     line);
     }
@@ -270,9 +266,9 @@ void imgProcessor::findCurveRecur(const cv::Mat &input, cv::Rect region, std::ve
 /// @todo: when we do detect a line segment, check next region of interest above it with horizontal(x) region
 ///         shifted to the horizontal(x) center of the line segment.
 
-   lines.at(line).push_back(cv::Point(max_loc, newRegion.y)); //insert the point to the vector of lines.
+   lines.at(line).push_back(cv::Point(max_loc.x, max_loc.y)); //insert the point to the vector of lines.
    findCurveRecur(input,
-                  region+max_loc+cv::Point(0,newRegion+1), // recenter to max, and shift upward.
+                  region+max_loc+cv::Point(0,1), // recenter to max, and shift upward.
                   lines,
                   line);
   }
@@ -369,9 +365,13 @@ void imgProcessor::selectColor(cv::Mat &input, cv::Mat &mask, Color code)
    // lower = cv::Vec3b(44,.40,.21);
    // upper = cv::Vec3b(70,1,1);
     break;
+  // case Color::BLACK:
+  //  // lower = cv::Vec3b(0,0,0);
+  //  // upper = cv::Vec3b(360,.3,1);
+  //   break;
   case Color::BLACK:
-   // lower = cv::Vec3b(0,0,0);
-   // upper = cv::Vec3b(360,.3,1);
+   // lower = cv::Vec3b(289,.5,.3);
+   // upper = cv::Vec3b(340,1,.8);
     break;
   }
 
